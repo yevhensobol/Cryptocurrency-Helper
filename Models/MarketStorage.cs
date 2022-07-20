@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Cryptocurrency_Helper.Models
 {
-    public class MainAssetStorage
+    public class MarketStorage
     {
-        public ObservableCollection<MainIndex> data { get; set; }
+        public ObservableCollection<Market> data { get; set; }
         private string timestamp;
 
         public string Timestamp { get; set; }

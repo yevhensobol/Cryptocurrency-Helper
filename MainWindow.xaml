@@ -5,41 +5,156 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"       
         xmlns:local="clr-namespace:Cryptocurrency_Helper"        
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
-        xmlns:viewmodel="clr-namespace:Cryptocurrency_Helper.ViewModels" 
-        d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
-        mc:Ignorable="d" 
+        xmlns:viewmodel="clr-namespace:Cryptocurrency_Helper.ViewModels"
+        mc:Ignorable="d"
         Title="Cryptocurrency Helper" Height="450" Width="800">
 
     <Window.Resources>
-        <CollectionViewSource x:Key="ItemCollectionViewSource" CollectionViewType="ListCollectionView"/>
-    </Window.Resources>
+
+        <Style x:Key="DataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#222528" />
+            <Setter Property="BorderBrush" Value="#FF688CAF"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="Margin" Value="0 10 0 0"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="ColumnWidth" Value="*"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        </Style>
+
+        <Style x:Key="DataGridRowStyle" TargetType="{x:Type DataGridRow}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0 3 0 3"/>
+            <Setter Property="Padding" Value="0 0 0 -10"/>
+            <Setter Property="Background" Value="#FFF6F6F6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border" BorderBrush="{TemplateBinding BorderBrush}" 
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        Background="{TemplateBinding Background}" 
+                                        SnapsToDevicePixels="True"
+                                        CornerRadius="10">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                <DataGridCellsPresenter Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                <DataGridDetailsPresenter Grid.Column="1" Grid.Row="1" SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Visibility="{TemplateBinding DetailsVisibility}"/>
+                                <DataGridRowHeader Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                            </SelectiveScrollingGrid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#222528" />
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Margin" Value="10 0 0 0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="0" SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DataGridColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#222528" />
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Margin" Value="10 0 0 0"/>
+        </Style>
+
+        <Style x:Key="TextBoxTemplate" TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#222528" />
+            <!--<Setter Property="BorderBrush" Value="#FF688CAF"/>-->
+            <Setter Property="BorderBrush" Value="#FF868E95"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="20" />
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style x:Key="ButtonGoTemplate" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#222528" />
+            <Setter Property="BorderBrush" Value="#FF868E95"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="10 0 0 0"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="15" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        
+    </Window.Resources>  
+    
+    <Window.Background>
+        <SolidColorBrush Color="White"/>
+    </Window.Background>
 
     <Grid>
         <StackPanel>
             <DockPanel LastChildFill="False" VerticalAlignment="Top">
                 <WrapPanel x:Name="Header" DockPanel.Dock="Top">
-                    <Button x:Name="ButtonDashboard" Content="Dashboard" Command="{Binding MenuDashboardClick}" Padding="10" Margin="10" FontFamily="Verdana" FontSize="20"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
+                    <Button x:Name="ButtonDashboard" Content="TOP 10" Command="{Binding MenuDashboardClick}" Padding="10" Margin="10" FontFamily="Verdana" FontSize="20"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
                     <Button x:Name="ButtonListAll" Content="List all" Command="{Binding MenuListAllClick}" Padding="10" Margin="10" FontFamily="Verdana" FontSize="20"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
-                    <Button x:Name="ButtonFavorites" Content="Favorites" Command="{Binding MenuFavoritesClick}" Padding="10" Margin="10" FontFamily="Verdana" FontSize="20"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
-                    <Button x:Name="ButtonSettigs" Content="Settigs" Command="{Binding MenuSettigsClick}" Padding="10" Margin="10" FontFamily="Verdana" FontSize="20"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
+                    <Button x:Name="ButtonFavorites" Content="Markets" Command="{Binding MenuMarketsClick}" Padding="10" Margin="10" FontFamily="Verdana" FontSize="20"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
+                     <TextBlock x:Name="ButtonSettigs" Text="Search:" Padding="10" Margin="10 10 0 0" FontFamily="Verdana" FontSize="20"  />
+                    <TextBox Style="{DynamicResource TextBoxTemplate}" x:Name="TextBoxSearch" Text="{Binding SearchRequest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" AcceptsReturn="False">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SearchClick}" />
+                        </TextBox.InputBindings>
+                    </TextBox>                    
+                    <Button Style="{DynamicResource ButtonGoTemplate}" x:Name="ButtonGo" Content="GO!" Command="{Binding SearchClick}"/>
+                    
                 </WrapPanel>
             </DockPanel>
-
-            <Border BorderThickness="1" BorderBrush="Gray">
-                <Frame Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden" HorizontalAlignment="Left"/>
-            </Border>
-
-            
-            <DataGrid x:Name="DataGrid" ItemsSource="{Binding MainIndexData.data}"  MinHeight="50" MaxHeight="450" Margin="15,15,0,15" Grid.RowSpan="2" Grid.ColumnSpan="10" HorizontalAlignment="Left"
-                  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" FontStyle="Normal" FontSize="20" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto">
-
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"/>
-                    <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-
+            <Line X1="20" Y1="-10" X2="330" Y2="-10" Stroke="#FF8A8A8A" StrokeThickness="1"/>
+            <Frame Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden" HorizontalAlignment="Left"/>
         </StackPanel>
-        <!--<TextBlock x:Name="StatusBar" Text="Status bar" Padding="5"  Background="DarkGray" FontFamily="Verdana" FontSize="14" VerticalAlignment="Bottom"/>-->
     </Grid>
 </Window>

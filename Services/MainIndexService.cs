@@ -1,5 +1,4 @@
-﻿using Cryptocurrency_Helper.Interfaces;
-using Cryptocurrency_Helper.Models;
+﻿using Cryptocurrency_Helper.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,18 +15,15 @@ namespace Cryptocurrency_Helper.Services
     {
         public static async Task<MainAssetStorage> GetMainIndex()
         {
-            string url = "https://api.coincap.io/v2/assets";
-            //string url = "https://api.coingecko.com/api/v3/indexes/";
+            string url = "https://api.coincap.io/v2/assets";            
 
             using (HttpResponseMessage response = await ServiceApi.Client.GetAsync(url))
             {
                 if(response.IsSuccessStatusCode)
                 {
-                    var JsonResponse = await response.Content.ReadAsStringAsync();
-                    //var result = JsonConvert.DeserializeObject<ObservableCollection<MainIndex>>(JsonResponse);                   
+                    var JsonResponse = await response.Content.ReadAsStringAsync();                 
                     var result = JsonConvert.DeserializeObject<MainAssetStorage>(JsonResponse);                    
                     return result;
-
                 }
                 else
                 {
@@ -35,18 +31,7 @@ namespace Cryptocurrency_Helper.Services
                 }
             }
             
-        }
-             
+        }     
 
-        //public async Task<List<MainIndex>> GetMainIndex()
-        //{
-        //    using (HttpClient client = new HttpClient())
-        //    {
-        //        HttpResponseMessage response = await client.GetAsync("https://api.coingecko.com/api/v3/indexes");
-        //        string JsonResponse = await response.Content.ReadAsStringAsync();                
-        //        var result = JsonConvert.DeserializeObject<List<MainIndex>>(JsonResponse);
-        //        return result;
-        //    }
-        //}
     }
 }

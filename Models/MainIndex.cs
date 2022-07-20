@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -10,14 +11,13 @@ namespace Cryptocurrency_Helper.Models
         private int rank;
         private string symbol;
         private string name;
-        private string supply;
-        private string maxSupply;
-        private string marketCapUsd;
-        private string volumeUsd24Hr;
-        private string priceUsd;
-        private string changePercent24Hr;
-        private string vwap24Hr;
-
+        private decimal? supply;
+        private decimal? maxSupply;
+        private decimal? marketCapUsd;
+        private decimal? volumeUsd24Hr;
+        private decimal? priceUsd;
+        private decimal? changePercent24Hr;
+        private decimal? vwap24Hr;
 
         public string Id
         {
@@ -39,65 +39,41 @@ namespace Cryptocurrency_Helper.Models
             set { this.name = value; OnPropertyChanged("Name"); }
             get { return this.name; }
         }
-        public string Supply
+        public decimal? Supply
         {
-            set { this.supply = value; OnPropertyChanged("Supply"); }
+            set { this.supply = Convert.ToDecimal(value); OnPropertyChanged("Supply"); }
             get { return this.supply; }
         }
-        public string MaxSupply
+        public decimal? MaxSupply
         {
-            set { this.maxSupply = value; OnPropertyChanged("MaxSupply"); }
+            set { this.maxSupply = Convert.ToDecimal(value); OnPropertyChanged("MaxSupply"); }
             get { return this.maxSupply; }
         }
-        public string MarketCapUsd
+        public decimal? MarketCapUsd
         {
-            set { this.marketCapUsd = value; OnPropertyChanged("MarketCapUsd"); }
-            get { return this.marketCapUsd; }
+            set { this.marketCapUsd = Convert.ToDecimal(value); OnPropertyChanged("MarketCapUsd"); }
+            get { return this.marketCapUsd/1000000000; }
         }
-        public string VolumeUsd24Hr
+        public decimal? VolumeUsd24Hr
         {
-            set { this.volumeUsd24Hr = value; OnPropertyChanged("VolumeUsd24Hr"); }
-            get { return this.volumeUsd24Hr; }
+            set { this.volumeUsd24Hr = Convert.ToDecimal(value); OnPropertyChanged("VolumeUsd24Hr"); }
+            get { return this.volumeUsd24Hr/1000000000; }
         }
-        public string PriceUsd
+        public decimal? PriceUsd
         {
-            set { this.priceUsd = value; OnPropertyChanged("PriceUsd"); }
+            set { this.priceUsd = Convert.ToDecimal(value); OnPropertyChanged("PriceUsd"); }
             get { return this.priceUsd; }
         }
-        public string ChangePercent24Hr
+        public decimal? ChangePercent24Hr
         {
-            set { this.changePercent24Hr = value; OnPropertyChanged("ChangePercent24Hr"); }
-            get { return this.changePercent24Hr; }
+            set { this.changePercent24Hr = Convert.ToDecimal(value); OnPropertyChanged("ChangePercent24Hr"); }
+            get { if (this.changePercent24Hr.HasValue && this.changePercent24Hr > (decimal)1.0) return Math.Round((decimal)changePercent24Hr, 1); else return Math.Round((decimal)changePercent24Hr, 3); }
         }
-        public string Vwap24Hr
+        public decimal? Vwap24Hr
         {
-            set { this.vwap24Hr = value; OnPropertyChanged("Vwap24Hr"); }
+            set { this.vwap24Hr = Convert.ToDecimal(value); OnPropertyChanged("Vwap24Hr"); }
             get { return this.vwap24Hr; }
         }
-
-        //[JsonProperty("name")]
-        //private string name;
-        //[JsonProperty("id")]
-        //private string id;
-        //[JsonProperty("last")]
-        //private string last;
-
-        //public string Name
-        //{
-        //    set { this.name = value; OnPropertyChanged("Name"); }
-        //    get { return this.name; }
-        //}
-        //public string Id
-        //{
-        //    set { this.id = value; OnPropertyChanged("Id"); }
-        //    get { return this.id; }
-        //}
-        //public string Last
-        //{
-        //    set { this.last = value; OnPropertyChanged("Last"); }
-        //    get { return this.last; }
-        //}
-
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)

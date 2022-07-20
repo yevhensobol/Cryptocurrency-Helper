@@ -12,20 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Cryptocurrency_Helper.ViewModels;
-using Cryptocurrency_Helper.Services;
 
 namespace Cryptocurrency_Helper.Pages
 {
     /// <summary>
-    /// Interaction logic for Settigs.xaml
+    /// Interaction logic for About.xaml
     /// </summary>
-    public partial class Settigs : Page
+    public partial class About : Page
     {
-        public Settigs()
+        public About()
         {
             InitializeComponent();
         }
     }
-
 }

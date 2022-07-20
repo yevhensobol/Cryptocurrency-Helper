@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Cryptocurrency_Helper.Pages
 {
     /// <summary>
-    /// Interaction logic for Favorites.xaml
+    /// Interaction logic for Markets.xaml
     /// </summary>
-    public partial class Favorites : Page
+    public partial class Markets : Page
     {
-        public Favorites()
+        public Markets()
         {
             InitializeComponent();
         }

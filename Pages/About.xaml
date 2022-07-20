@@ -1,4 +1,4 @@
-﻿<Page x:Class="Cryptocurrency_Helper.Pages.ListAll"
+﻿<Page x:Class="Cryptocurrency_Helper.Pages.About"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -80,12 +80,12 @@
         </Style>
 
 
-
         <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="Foreground" Value="#222528" />
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <!--<Setter Property="FocusVisualStyle" Value="{x:Null}" />-->
             <Setter Property="Margin" Value="10 0 0 0"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -107,31 +107,45 @@
             <Setter Property="Margin" Value="10 0 0 0"/>
         </Style>
 
-
+        
     </Page.Resources>
-
-    <Grid>
-
-
-        <StackPanel>            
-            <DataGrid ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}" RowStyle="{DynamicResource DataGridRowStyle}" 
-                      CellStyle="{DynamicResource DataGridCellStyle}" x:Name="DataGrid" Style="{DynamicResource DataGridStyle}" 
-                      ItemsSource="{Binding MainIndexData.data}" MinHeight="50" MaxHeight="700" IsSynchronizedWithCurrentItem="True">
-                <DataGrid.InputBindings>
-                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding MenuDashboardRowClick}" CommandParameter="{Binding ElementName=DataGrid, 
-                                                 Path=SelectedItem}" />
-                </DataGrid.InputBindings>
-
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="#" Binding="{Binding Path=Rank}" IsReadOnly="True" Width="50"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Symbol" Binding="{Binding Path=Symbol}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Price USD" Binding="{Binding Path=PriceUsd, StringFormat=$0.0}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Change in 24h." Binding="{Binding Path=ChangePercent24Hr, StringFormat={}{0}%}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Capitalization" Binding="{Binding Path=MarketCapUsd, StringFormat=$0.0M}" IsReadOnly="True"/>
-                </DataGrid.Columns>
-            </DataGrid>
-
+    <Page.Background>
+        <SolidColorBrush Color="White"/>
+    </Page.Background>
+    <Grid>        
+        <StackPanel>
+            <WrapPanel>
+                <TextBlock Text="Name: " Padding="10" Margin="10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+                <TextBlock Text="{Binding Path=SearchData.data.Name}" Padding="10" Margin="-10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Text="Symbol: " Padding="10" Margin="10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+                <TextBlock Text="{Binding Path=SearchData.data.Symbol}" Padding="10" Margin="-10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Text="Id: " Padding="10" Margin="10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+                <TextBlock Text="{Binding Path=SearchData.data.Id}" Padding="10" Margin="-10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Text="Price USD: " Padding="10" Margin="10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+                <TextBlock Text="{Binding Path=SearchData.data.PriceUsd, StringFormat=$0.0}" Padding="10" Margin="-10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Text="Change in 24h: " Padding="10" Margin="10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+                <TextBlock Text="{Binding Path=SearchData.data.ChangePercent24Hr, StringFormat={}{0}%}" Padding="10" Margin="-10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+            </WrapPanel>            
+            <WrapPanel>
+                <TextBlock Text="Volume in 24Hr: " Padding="10" Margin="10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+                <TextBlock Text="{Binding Path=SearchData.data.VolumeUsd24Hr, StringFormat=$0.0M}" Padding="10" Margin="-10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Text="Capitalization: " Padding="10" Margin="10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+                <TextBlock Text="{Binding Path=SearchData.data.MarketCapUsd, StringFormat=$0.0M}" Padding="10" Margin="-10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Text="Supply: " Padding="10" Margin="10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+                <TextBlock Text="{Binding Path=SearchData.data.Supply, StringFormat=0.0}" Padding="10" Margin="-10 0 0 0" FontFamily="Verdana" FontSize="20"  />
+            </WrapPanel>  
         </StackPanel>
     </Grid>
 </Page>

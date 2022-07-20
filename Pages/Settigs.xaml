@@ -3,12 +3,119 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Cryptocurrency_Helper.Pages"
+      xmlns:local="clr-namespace:Cryptocurrency_Helper"            
+      xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
+      xmlns:viewmodel="clr-namespace:Cryptocurrency_Helper.ViewModels"
+      d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Settigs">
 
+    <Page.Resources>       
+        
+        <Style x:Key="DataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#222528" />
+            <Setter Property="BorderBrush" Value="#FF688CAF"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="Margin" Value="0 10 0 0"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="ColumnWidth" Value="*"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        </Style>
+
+        <Style x:Key="DataGridRowStyle" TargetType="{x:Type DataGridRow}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0 3 0 3"/>
+            <Setter Property="Padding" Value="0 0 0 -10"/>
+            <Setter Property="Background" Value="#FFF6F6F6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border" BorderBrush="{TemplateBinding BorderBrush}" 
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        Background="{TemplateBinding Background}" 
+                                        SnapsToDevicePixels="True"
+                                        CornerRadius="10">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                <DataGridCellsPresenter Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                <DataGridDetailsPresenter Grid.Column="1" Grid.Row="1" SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Visibility="{TemplateBinding DetailsVisibility}"/>
+                                <DataGridRowHeader Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                            </SelectiveScrollingGrid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#222528" />
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Margin" Value="10 0 0 0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="0" SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DataGridColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#222528" />
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Margin" Value="10 0 0 0"/>
+        </Style>
+
+    </Page.Resources>
+
     <Grid>
-        <Label Content="Content - Settigs" FontSize="50" FontFamily="Verdana" Margin="10" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel>
+            <Line X1="20" Y1="-10" X2="500" Y2="-10" Stroke="#FF8A8A8A" StrokeThickness="1"/>            
+            <DataGrid ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}" RowStyle="{DynamicResource DataGridRowStyle}" 
+                      CellStyle="{DynamicResource DataGridCellStyle}" x:Name="DataGrid" Style="{DynamicResource DataGridStyle}" 
+                      ItemsSource="{Binding MainIndexData.data}" MinHeight="50" MaxHeight="500">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="####" Binding="{Binding Path=Rank}" IsReadOnly="True" Width="50"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Symbol" Binding="{Binding Path=Symbol}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Price USD" Binding="{Binding Path=PriceUsd, StringFormat=$0.0}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Change in 24h." Binding="{Binding Path=ChangePercent24Hr, StringFormat={}{0}%}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Capitalization" Binding="{Binding Path=MarketCapUsd, StringFormat=$0.0M}" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </StackPanel>
+        <!--<TextBlock x:Name="StatusBar" Text="Status bar" Padding="5"  Background="DarkGray" FontFamily="Verdana" FontSize="14" VerticalAlignment="Bottom"/>-->
     </Grid>
+
+
 </Page>
