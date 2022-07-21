@@ -7,4 +7,4 @@ list of markets where you can buy cryptocurrency;
 search cryptocurrency and get detailed information;
 simple and clean ui;
 used MVVM pattern.
-All data is loaded via API COINCAP API 2.0: https://docs.coincap.io/
+All data is loaded via API CryptingUp API: https://www.cryptingup.com/apidoc
